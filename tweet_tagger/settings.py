@@ -31,9 +31,10 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     # Third party
     "django_extensions",
+    "import_export",
+    "django_htmx",
     # Personal
     "tweets",
-    "import_export",
 ]
 
 MIDDLEWARE = [
@@ -45,6 +46,7 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    "django_htmx.middleware.HtmxMiddleware",
 ]
 
 ROOT_URLCONF = "tweet_tagger.urls"
