@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+<div class="flex-1 mt-8">
+    <div class="flex flex-col flex-wrap container px-5 py-10 space-y-4 mx-auto text-gray-700 bg-gray-50 rounded-xl shadow-lg">
+
+        <div class="py-4 text-center tracking-wide text-2xl font-bold">¿Seguridad o no?</div>
+
+        {% if no_tweets %}
+        <div class="text-sm text-center bg-red-100 rounded-2xl px-4 py-2">
+            <div>No available tweets</div>
+        </div>
+        {% else %}
+
+            <div class="h-32 space-y-4">
+                <div id="tweet" class="text-center mt-6">{{tweet.text}}</div>
+                <div id="url" class="text-center text-xs">ver tweet: <a target="_blank" href="{{tweet.tweet_url}}">{{tweet.tweet_url}}</a></div>
+            </div>
+            
+            <form method="post" class="flex space-x-4 justify-center">
+                {% csrf_token %}
+                {{ form.non_field_errors }}
+                
+
+                <input type="hidden" name="tweet_id" value="{{tweet.id}}">
+                <input 
+                    onclick="setLoading()"
+                    id="yes"
+                    type="submit"
+                    name="value"
+                    value="Yes"
+                    class="transform hover:scale-110 transition duration-150 ease-in-out shadow-md flex font-bold mx-auto mt-8 border py-2 px-8 focus:outline-none hover:bg-green-200 bg-green-300 rounded text-xs cursor-pointer"
+                >
+                <input
+                    onclick="setLoading()"
+                    type="submit"
+                    name="value"
+                    value="No"
+                    class="transform hover:scale-110 transition duration-150 ease-in-out shadow-md flex font-bold mx-auto mt-8 border py-2 px-8 focus:outline-none hover:bg-red-200 bg-red-300 rounded text-xs cursor-pointer"
+                >
+                <input
+                    onclick="setLoading()"
+                    type="submit"
+                    name="value"
+                    value="Skip"
+                    class="transform hover:scale-110 transition duration-150 ease-in-out shadow-md flex font-bold mx-auto mt-8 border py-2 px-8 focus:outline-none hover:bg-gray-100 rounded text-xs cursor-pointer"
+                >
+            </form>
+        {% endif %}
+    </div>
+</div>
+
+<script type="text/javascript">
+    function setLoading() {
+        document.getElementById("tweet").innerHTML = "Loading...";
+        document.getElementById("url").innerHTML = "";
+    }
+</script>
+{% endblock content %}
