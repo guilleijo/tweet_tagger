@@ -1,5 +1,5 @@
 # tweet_tagger
-Create short urls for the provided original url.
+Tag tweet information to see if it's about security or not.
 
 ## Live site
 Go to [tweet-tagger](https://tweet-tagger.herokuapp.com/)
