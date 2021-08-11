@@ -1,9 +1,6 @@
 # tweet_tagger
 Tag tweet information to see if it's about security or not.
 
-## Live site
-Go to [tweet-tagger](https://tweet-tagger.herokuapp.com/)
-
 ## Built with
 - [Django](https://www.djangoproject.com/)
 - [tailwindcss](https://tailwindcss.com/)
