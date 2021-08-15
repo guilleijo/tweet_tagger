@@ -1,7 +1,6 @@
 from django import forms
 from django.http import request
 
-
 STATUS_CHOICES = (
     ("Yes", "Yes"),
     ("No", "No"),

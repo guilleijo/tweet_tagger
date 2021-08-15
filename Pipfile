@@ -19,6 +19,7 @@ ipdb = "*"
 flake8 = "*"
 black = "*"
 django-debug-toolbar = "*"
+isort = "*"
 
 [requires]
 python_version = "3.9"

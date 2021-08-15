@@ -1,6 +1,5 @@
 from django.contrib import admin
-from django.db.models import Q, Count
-
+from django.db.models import Count, Q
 from import_export import resources
 from import_export.admin import ImportExportModelAdmin
 
@@ -64,5 +63,5 @@ class ClassificationAdmin(ImportExportModelAdmin):
         "tweet",
     )
 
-    list_select_related = ["tweet", "user"]
-    autocomplete_fields = ["tweet", "user"]
+    list_select_related = ("tweet", "user")
+    autocomplete_fields = ("tweet", "user")

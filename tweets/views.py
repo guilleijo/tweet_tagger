@@ -1,14 +1,12 @@
 import random
 
-from django.http import HttpRequest
-from django.views import View
-from django.shortcuts import render, redirect, get_object_or_404
-
-from tweets.models import Classification, Tweet
-from tweets.forms import ClassificationForm
-
-
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.http import HttpRequest
+from django.shortcuts import get_object_or_404, redirect, render
+from django.views import View
+
+from tweets.forms import ClassificationForm
+from tweets.models import Classification, Tweet
 
 
 class HomeView(LoginRequiredMixin, View):
