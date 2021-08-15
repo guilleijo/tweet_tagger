@@ -3,6 +3,7 @@ from django.db import models
 
 User = get_user_model()
 
+
 class Tweet(models.Model):
     text = models.TextField(blank=True)
     tweet_url = models.URLField(max_length=255)
@@ -13,6 +14,10 @@ class Tweet(models.Model):
 
 
 class Classification(models.Model):
-    tweet = models.ForeignKey(Tweet, on_delete=models.CASCADE, related_name="classifications")
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="classifications")
+    tweet = models.ForeignKey(
+        Tweet, on_delete=models.CASCADE, related_name="classifications"
+    )
+    user = models.ForeignKey(
+        User, on_delete=models.CASCADE, related_name="classifications"
+    )
     is_seguridad = models.BooleanField(null=True)

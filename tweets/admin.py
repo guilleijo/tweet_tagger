@@ -30,11 +30,6 @@ class TweetAdmin(ImportExportModelAdmin):
     )
     readonly_fields = ("id", "si_seguridad", "no_seguridad")
     search_fields = ("id", "text", "account")
-    search_fields = (
-        "id",
-        "text",
-        "account",
-    )
 
     def si_seguridad(self, obj):
         return obj._positive_classification
@@ -45,8 +40,12 @@ class TweetAdmin(ImportExportModelAdmin):
     def get_queryset(self, request):
         qs = super().get_queryset(request)
         qs = qs.prefetch_related("classifications").annotate(
-            _positive_classification=Count("id", filter=Q(classifications__is_seguridad=True)),
-            _negative_classification=Count("id", filter=Q(classifications__is_seguridad=False)),
+            _positive_classification=Count(
+                "id", filter=Q(classifications__is_seguridad=True)
+            ),
+            _negative_classification=Count(
+                "id", filter=Q(classifications__is_seguridad=False)
+            ),
         )
         return qs
 
@@ -65,3 +64,11 @@ class ClassificationAdmin(ImportExportModelAdmin):
 
     list_select_related = ("tweet", "user")
     autocomplete_fields = ("tweet", "user")
+    search_fields = (
+        "id",
+        "user__id",
+        "user__username",
+        "user__first_name",
+        "user__last_name",
+        "user__email",
+    )

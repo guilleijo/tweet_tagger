@@ -9,21 +9,43 @@ class Migration(migrations.Migration):
 
     dependencies = [
         migrations.swappable_dependency(settings.AUTH_USER_MODEL),
-        ('tweets', '0002_alter_tweet_text'),
+        ("tweets", "0002_alter_tweet_text"),
     ]
 
     operations = [
         migrations.RemoveField(
-            model_name='tweet',
-            name='is_seguridad',
+            model_name="tweet",
+            name="is_seguridad",
         ),
         migrations.CreateModel(
-            name='Classification',
+            name="Classification",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('is_seguridad', models.BooleanField(null=True)),
-                ('tweet', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='classifications', to='tweets.tweet')),
-                ('user', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='classifications', to=settings.AUTH_USER_MODEL)),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("is_seguridad", models.BooleanField(null=True)),
+                (
+                    "tweet",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="classifications",
+                        to="tweets.tweet",
+                    ),
+                ),
+                (
+                    "user",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="classifications",
+                        to=settings.AUTH_USER_MODEL,
+                    ),
+                ),
             ],
         ),
     ]
