@@ -7,7 +7,11 @@ from tweets.models import Tweet
 from tweets.forms import ClassificationForm
 
 
-class HomeView(View):
+from django.contrib.auth.mixins import LoginRequiredMixin
+
+
+class HomeView(LoginRequiredMixin, View):
+    login_url = "/admin/login/"
     template_name = "home.html"
     htmx_template_name = "htmx/tweet.html"
 

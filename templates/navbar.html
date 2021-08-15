@@ -3,4 +3,9 @@
         <a href="{% url "home_page" %}" class="flex title-font font-medium items-center mb-4 md:mb-0">
             <span class="ml-1 text-lg font-medium">Tweet Tagger</span>
         </a>
+
+    <form method="POST" action="/admin/logout">
+        {% csrf_token %}
+        <button>Logout</button>
+    </form>
 </header>
