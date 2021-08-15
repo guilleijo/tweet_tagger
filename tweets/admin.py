@@ -31,20 +31,28 @@ class TweetAdmin(ImportExportModelAdmin):
     )
     readonly_fields = ("id", "si_seguridad", "no_seguridad")
     search_fields = ("id", "text", "account")
+    search_fields = (
+        "id",
+        "text",
+        "account",
+    )
 
     def si_seguridad(self, obj):
-        return obj.positive_tag
+        return obj._positive_classification
 
     def no_seguridad(self, obj):
-        return obj.negative_tag
+        return obj._negative_classification
 
     def get_queryset(self, request):
         qs = super().get_queryset(request)
         qs = qs.prefetch_related("classifications").annotate(
-            positive_tag=Count("id", filter=Q(classifications__is_seguridad=True)),
-            negative_tag=Count("id", filter=Q(classifications__is_seguridad=False)),
+            _positive_classification=Count("id", filter=Q(classifications__is_seguridad=True)),
+            _negative_classification=Count("id", filter=Q(classifications__is_seguridad=False)),
         )
         return qs
+
+    si_seguridad.admin_order_field = "_positive_classification"
+    no_seguridad.admin_order_field = "_negative_classification"
 
 
 @admin.register(Classification)
