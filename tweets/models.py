@@ -21,3 +21,6 @@ class Classification(models.Model):
         User, on_delete=models.CASCADE, related_name="classifications"
     )
     is_seguridad = models.BooleanField(null=True)
+
+    def __str__(self):
+        return f"{self.id} - {self.user} - {self.is_seguridad}"

@@ -1,9 +1,44 @@
 from django.contrib import admin
+from django.core.exceptions import ValidationError
 from django.db.models import Count, Q
 from import_export import resources
 from import_export.admin import ImportExportModelAdmin
 
 from tweets.models import Classification, Tweet
+
+
+class ClassificationInline(admin.StackedInline):
+    model = Classification
+    extra = 0
+    show_change_link = True
+    autocomplete_fields = ["user"]
+    readonly_fields = ["user"]
+
+    def get_queryset(self, request):
+        qs = super().get_queryset(request)
+        qs = qs.select_related("user")
+        return qs
+
+
+@admin.register(Classification)
+class ClassificationAdmin(admin.ModelAdmin):
+    list_display = (
+        "id",
+        "user",
+        "is_seguridad",
+        "tweet",
+    )
+
+    list_select_related = ("tweet", "user")
+    autocomplete_fields = ("tweet", "user")
+    search_fields = (
+        "id",
+        "user__id",
+        "user__username",
+        "user__first_name",
+        "user__last_name",
+        "user__email",
+    )
 
 
 class TweetResource(resources.ModelResource):
@@ -30,6 +65,7 @@ class TweetAdmin(ImportExportModelAdmin):
     )
     readonly_fields = ("id", "si_seguridad", "no_seguridad")
     search_fields = ("id", "text", "account")
+    inlines = (ClassificationInline,)
 
     def si_seguridad(self, obj):
         return obj._positive_classification
@@ -38,6 +74,7 @@ class TweetAdmin(ImportExportModelAdmin):
         return obj._negative_classification
 
     def get_queryset(self, request):
+        print("*****", "GET QUERYSET", "*****")
         qs = super().get_queryset(request)
         qs = qs.prefetch_related("classifications").annotate(
             _positive_classification=Count(
@@ -51,24 +88,3 @@ class TweetAdmin(ImportExportModelAdmin):
 
     si_seguridad.admin_order_field = "_positive_classification"
     no_seguridad.admin_order_field = "_negative_classification"
-
-
-@admin.register(Classification)
-class ClassificationAdmin(ImportExportModelAdmin):
-    list_display = (
-        "id",
-        "user",
-        "is_seguridad",
-        "tweet",
-    )
-
-    list_select_related = ("tweet", "user")
-    autocomplete_fields = ("tweet", "user")
-    search_fields = (
-        "id",
-        "user__id",
-        "user__username",
-        "user__first_name",
-        "user__last_name",
-        "user__email",
-    )
