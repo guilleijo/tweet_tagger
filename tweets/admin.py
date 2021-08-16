@@ -8,6 +8,10 @@ from import_export.fields import Field
 
 from tweets.models import Classification, Tweet
 
+site_name = "tweet tagger"
+admin.site.site_header = site_name
+admin.site.site_title = site_name
+admin.site.index_title = "Admin"
 
 class ClassificationInline(admin.StackedInline):
     model = Classification
