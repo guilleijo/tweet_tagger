@@ -6,6 +6,6 @@
 
     <form method="POST" action="/admin/logout">
         {% csrf_token %}
-        <button>Logout</button>
+        <button>Logout ({{user.username}})</button>
     </form>
 </header>
