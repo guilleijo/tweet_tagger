@@ -4,8 +4,16 @@
             <span class="ml-1 text-lg font-medium">Tweet Tagger</span>
         </a>
 
-    <form method="POST" action="/admin/logout">
-        {% csrf_token %}
-        <button>Logout ({{user.username}})</button>
-    </form>
+        <div class="flex">
+            {% if user.is_superuser %}
+            <a class="mr-3" href="/admin">Admin</a>
+            {% endif %}
+            <form method="POST" action="/admin/logout">
+                {% csrf_token %}
+                <button class="cursor-pointer">
+                    Logout ({{user.username}})
+                </button>
+            </form>
+        </div>
+
 </header>
