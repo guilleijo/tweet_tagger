@@ -43,6 +43,13 @@ class ClassificationAdmin(admin.ModelAdmin):
     )
 
 
+class TweetImportResource(resources.ModelResource):
+    """Ignore classifications/classifiers on import"""
+
+    class Meta:
+        model = Tweet
+
+
 class TweetResource(resources.ModelResource):
     positive_classification = Field(attribute="_positive_classification")
     negative_classification = Field(attribute="_negative_classification")
@@ -110,6 +117,9 @@ class TweetAdmin(ImportExportModelAdmin):
             ),
         )
         return qs
+
+    def get_import_resource_class(self):
+        return TweetImportResource
 
     si_seguridad.admin_order_field = "_positive_classification"
     no_seguridad.admin_order_field = "_negative_classification"
