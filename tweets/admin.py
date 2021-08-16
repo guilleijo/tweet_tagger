@@ -1,5 +1,6 @@
 from django.contrib import admin
 from django.db.models import Count, Q
+from django.contrib.postgres.aggregates import ArrayAgg
 
 from import_export import resources
 from import_export.admin import ImportExportModelAdmin
@@ -46,6 +47,9 @@ class TweetResource(resources.ModelResource):
     positive_classification = Field(attribute="_positive_classification")
     negative_classification = Field(attribute="_negative_classification")
 
+    positive_classifiers = Field(attribute="_positive_classifiers")
+    negative_classifiers = Field(attribute="_negative_classifiers")
+
     class Meta:
         model = Tweet
 
@@ -60,6 +64,8 @@ class TweetAdmin(ImportExportModelAdmin):
         "account",
         "si_seguridad",
         "no_seguridad",
+        "positive_classifiers",
+        "negative_classifiers",
     )
 
     fields = (
@@ -79,15 +85,28 @@ class TweetAdmin(ImportExportModelAdmin):
     def no_seguridad(self, obj):
         return obj._negative_classification
 
+    def positive_classifiers(self, obj):
+        return obj._positive_classifiers
+
+    def negative_classifiers(self, obj):
+        return obj._negative_classifiers
+
     def get_queryset(self, request):
-        print("*****", "GET QUERYSET", "*****")
         qs = super().get_queryset(request)
-        qs = qs.prefetch_related("classifications").annotate(
+        qs = qs.prefetch_related("classifications", "classifications__user").annotate(
             _positive_classification=Count(
                 "id", filter=Q(classifications__is_seguridad=True)
             ),
             _negative_classification=Count(
                 "id", filter=Q(classifications__is_seguridad=False)
+            ),
+            _positive_classifiers=ArrayAgg(
+                "classifications__user__username",
+                filter=Q(classifications__is_seguridad=True),
+            ),
+            _negative_classifiers=ArrayAgg(
+                "classifications__user__username",
+                filter=Q(classifications__is_seguridad=False),
             ),
         )
         return qs
