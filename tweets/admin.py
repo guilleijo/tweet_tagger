@@ -1,8 +1,9 @@
 from django.contrib import admin
-from django.core.exceptions import ValidationError
 from django.db.models import Count, Q
+
 from import_export import resources
 from import_export.admin import ImportExportModelAdmin
+from import_export.fields import Field
 
 from tweets.models import Classification, Tweet
 
@@ -42,12 +43,17 @@ class ClassificationAdmin(admin.ModelAdmin):
 
 
 class TweetResource(resources.ModelResource):
+    positive_classification = Field(attribute="_positive_classification")
+    negative_classification = Field(attribute="_negative_classification")
+
     class Meta:
         model = Tweet
 
 
 @admin.register(Tweet)
 class TweetAdmin(ImportExportModelAdmin):
+    resource_class = TweetResource
+
     list_display = (
         "id",
         "text",
