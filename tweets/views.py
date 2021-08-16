@@ -16,7 +16,7 @@ class HomeView(LoginRequiredMixin, View):
 
     def _get_tweet(self, request: HttpRequest, template_name):
         try:
-            tweets = Tweet.objects.all()
+            tweets = Tweet.objects.exclude(classifications__user=request.user)
             random_tweet = random.choice(list(tweets))
         except Exception:
             return render(request, template_name, {"no_tweets": True})
