@@ -6,9 +6,21 @@
     hx-target="this"
     hx-include="[name='value']"
 >
-    <div class="h-32 space-y-4">
-        <div id="tweet" class="text-center mt-6">{{tweet.text}}</div>
-        <div id="url" class="text-center text-xs">ver tweet: <a target="_blank" href="{{tweet.tweet_url}}">{{tweet.tweet_url}}</a></div>
+    <div class="h-52 space-y-8 p-4">
+        <div class="flex space-x-2 justify-between">
+            <div id="account" class=" text-sm">{{tweet.account}}</div>
+            {% if tweet.tweet_url%}
+            <div id="url" class=" text-sm items-end">
+                <a class="flex items-center justify-items-center" target="_blank" href="{{tweet.tweet_url}}">
+                    ver tweet
+                    <svg class="h-4 w-4 ml-1" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                    </svg>
+                </a>
+            </div>
+            {% endif%}
+        </div>
+        <div id="tweet" class="font-medium">{{tweet.text}}</div>
     </div>
 
     {% csrf_token %}
@@ -49,7 +61,8 @@
         const value = event.target.value
         document.getElementById("hiddenValue").value = value;
 
-        document.getElementById("tweet").innerHTML = "Loading...";
-        document.getElementById("url").innerHTML = "";
+        // document.getElementById("tweet").innerHTML = "Loading...";
+        // document.getElementById("account").innerHTML = "";
+        // document.getElementById("url").innerHTML = "";
     }
 </script>
