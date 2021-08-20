@@ -1,6 +1,9 @@
+import sys
 from pathlib import Path
 
 import environ
+import sentry_sdk
+from sentry_sdk.integrations.django import DjangoIntegration
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -133,3 +136,58 @@ if env.bool("SHOW_TOOLBAR", False):
         "SHOW_TEMPLATE_CONTEXT": True,
     }
     INTERNAL_IPS = ["127.0.0.1", "10.0.2.2"]
+
+
+# sentry
+USE_SENTRY = env.bool("USE_SENTRY")
+SENTRY_DSN = env("SENTRY_DSN")
+if USE_SENTRY:
+    sentry_sdk.init(
+        dsn=SENTRY_DSN,
+        integrations=[DjangoIntegration()],
+
+        # Set traces_sample_rate to 1.0 to capture 100%
+        # of transactions for performance monitoring.
+        # We recommend adjusting this value in production.
+        traces_sample_rate=1.0,
+
+        # If you wish to associate users to errors (assuming you are using
+        # django.contrib.auth) you may enable sending PII data.
+        send_default_pii=True
+    )
+
+
+# logging
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'formatters': {
+        'verbose': {
+            'format': ('%(asctime)s [%(process)d] [%(levelname)s] ' +
+                       'pathname=%(pathname)s lineno=%(lineno)s ' +
+                       'funcname=%(funcName)s %(message)s'),
+            'datefmt': '%Y-%m-%d %H:%M:%S'
+        },
+        'simple': {
+            'format': '%(levelname)s %(message)s'
+        }
+    },
+    'handlers': {
+        'null': {
+            'level': 'DEBUG',
+            'class': 'logging.NullHandler',
+        },
+        'console': {
+            'level': 'INFO',
+            'class': 'logging.StreamHandler',
+            'formatter': 'verbose',
+            'stream': sys.stdout,
+        }
+    },
+    'loggers': {
+        'MYAPP': {
+            'handlers': ['console'],
+            'level': 'INFO',
+        }
+    }
+}

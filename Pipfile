@@ -12,6 +12,7 @@ django-extensions = "*"
 psycopg2-binary = "*"
 django-import-export = "*"
 django-htmx = "*"
+sentry-sdk = "*"
 
 [dev-packages]
 ipython = "*"
