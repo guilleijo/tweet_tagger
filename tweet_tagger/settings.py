@@ -191,3 +191,5 @@ LOGGING = {
         }
     }
 }
+
+DISABLE_SERVER_SIDE_CURSORS = True  # required when using pgbouncer's pool_mode=transaction
