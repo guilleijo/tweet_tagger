@@ -33,8 +33,9 @@
 
     <div class="flex space-x-4 justify-center">
         <input type="hidden" name="tweet_id" value="{{tweet.id}}">
-        <input id="hiddenValue" type="hidden" name="value" value="Yes">
-        <input 
+        <input id="hiddenValue" type="hidden" name="value" value="">
+        <input
+            onclick="setLoading()" 
             id="yes"
             type="submit"
             name="value"
@@ -42,12 +43,14 @@
             class="transform hover:scale-110 transition duration-150 ease-in-out shadow-md flex font-bold mx-auto mt-8 border py-2 px-8 focus:outline-none hover:bg-green-200 bg-green-300 rounded text-xs cursor-pointer"
         >
         <input
+            onclick="setLoading()"
             type="submit"
             name="value"
             value="No"
             class="transform hover:scale-110 transition duration-150 ease-in-out shadow-md flex font-bold mx-auto mt-8 border py-2 px-8 focus:outline-none hover:bg-red-200 bg-red-300 rounded text-xs cursor-pointer"
         >
         <input
+            onclick="setLoading()"
             type="submit"
             name="value"
             value="Skip"
@@ -55,3 +58,11 @@
         >
     </div>
 </form>
+
+
+<script type="text/javascript">
+    function setLoading() {
+        const value = event.target.value
+        document.getElementById("hiddenValue").value = value;
+    }
+</script> 

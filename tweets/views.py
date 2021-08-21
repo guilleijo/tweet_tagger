@@ -40,7 +40,7 @@ class HomeView(LoginRequiredMixin, View):
             "Yes": True,
             "No": False,
             "Skip": None,
-        }.get(value, True)
+        }.get(value, None)
         tweet = get_object_or_404(Tweet, id=tweet_id)
 
         if bool_value is not None:
