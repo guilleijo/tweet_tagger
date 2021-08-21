@@ -14,6 +14,8 @@ class Tweet(models.Model):
 
 
 class Classification(models.Model):
+    created = models.DateTimeField(auto_now_add=True)
+    updated = models.DateTimeField(auto_now=True)
     tweet = models.ForeignKey(
         Tweet, on_delete=models.CASCADE, related_name="classifications"
     )

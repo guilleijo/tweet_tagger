@@ -1,7 +1,6 @@
 from django.contrib import admin
-from django.db.models import Count, Q
 from django.contrib.postgres.aggregates import ArrayAgg
-
+from django.db.models import Count, Q
 from import_export import resources
 from import_export.admin import ImportExportModelAdmin
 from import_export.fields import Field
@@ -12,6 +11,7 @@ site_name = "tweet tagger"
 admin.site.site_header = site_name
 admin.site.site_title = site_name
 admin.site.index_title = "Admin"
+
 
 class ClassificationInline(admin.StackedInline):
     model = Classification
@@ -33,6 +33,8 @@ class ClassificationAdmin(admin.ModelAdmin):
         "user",
         "is_seguridad",
         "tweet",
+        "created",
+        "updated",
     )
 
     list_select_related = ("tweet", "user")
@@ -45,6 +47,7 @@ class ClassificationAdmin(admin.ModelAdmin):
         "user__last_name",
         "user__email",
     )
+    readonly_fields = ["created", "updated"]
 
 
 class TweetImportResource(resources.ModelResource):
