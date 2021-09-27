@@ -8,6 +8,7 @@ class Tweet(models.Model):
     text = models.TextField(blank=True)
     tweet_url = models.URLField(max_length=255)
     account = models.CharField(max_length=255, blank=True)
+    hide_tweet = models.BooleanField(default=False, help_text="Dejar de mostrar el tweet")
 
     def __str__(self):
         return f"{self.account} - {self.text[:100]}..."

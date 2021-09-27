@@ -18,7 +18,6 @@ class ClassificationInline(admin.StackedInline):
     extra = 0
     show_change_link = True
     autocomplete_fields = ["user"]
-    readonly_fields = ["user"]
 
     def get_queryset(self, request):
         qs = super().get_queryset(request)
@@ -80,6 +79,7 @@ class TweetAdmin(ImportExportModelAdmin):
         "no_seguridad",
         "positive_classifiers",
         "negative_classifiers",
+        "hide_tweet",
     )
 
     fields = (
@@ -88,6 +88,7 @@ class TweetAdmin(ImportExportModelAdmin):
         "account",
         "si_seguridad",
         "no_seguridad",
+        "hide_tweet",
     )
     readonly_fields = ("id", "si_seguridad", "no_seguridad")
     search_fields = ("id", "text", "account")

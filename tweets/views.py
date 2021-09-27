@@ -4,6 +4,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import HttpRequest
 from django.shortcuts import get_object_or_404, redirect, render
 from django.views import View
+from django.db.models import Q
 
 from tweets.forms import ClassificationForm
 from tweets.models import Classification, Tweet
@@ -16,7 +17,9 @@ class HomeView(LoginRequiredMixin, View):
 
     def _get_tweet(self, request: HttpRequest, template_name):
         try:
-            tweets = Tweet.objects.exclude(classifications__user=request.user)
+            tweets = Tweet.objects.exclude(
+                Q(classifications__user=request.user) | Q(hide_tweet=True),
+            )
             random_tweet = random.choice(list(tweets))
         except Exception:
             return render(request, template_name, {"no_tweets": True})
@@ -49,5 +52,10 @@ class HomeView(LoginRequiredMixin, View):
                 is_seguridad=bool_value,
                 tweet=tweet,
             )
+
+        classification_count = tweet.classifications.count()
+        if classification_count > 2:
+            tweet.hide_tweet = True
+            tweet.save()
 
         return self._get_tweet(request, self.htmx_template_name)
